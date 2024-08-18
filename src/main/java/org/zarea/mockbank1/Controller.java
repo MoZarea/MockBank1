@@ -19,4 +19,25 @@ public class Controller {
         );
         return new Response<>(200,"done",balanceResponse);
     }
+    @PostMapping("/withdraw")
+    public Response<?> withdraw(@RequestHeader String token, @RequestHeader int amount) {
+        System.out.println(token);
+        if (!token.equals("BOE-0112-XgF0")) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+        if (amount > balance) {
+            throw new IllegalArgumentException("Insufficient balance");
+        }
+        balance -= amount;
+        return new Response<>(200,"done",null);
+    }
+    @PostMapping("/deposit")
+    public Response<?> deposit(@RequestHeader String token, @RequestHeader int amount) {
+        System.out.println(token);
+        if (!token.equals("BOE-0112-XgF0")) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+        balance += amount;
+        return new Response<>(200,"done",null);
+    }
 }
