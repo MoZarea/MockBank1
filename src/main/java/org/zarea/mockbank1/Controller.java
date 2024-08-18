@@ -19,7 +19,7 @@ public class Controller {
         );
         return new Response<>(200,"done",balanceResponse);
     }
-    @PostMapping("/withdraw")
+    @GetMapping("/withdraw")
     public Response<?> withdraw(@RequestHeader String token, @RequestHeader int amount) {
         System.out.println(token);
         if (!token.equals("BOE-0112-XgF0")) {
@@ -31,7 +31,7 @@ public class Controller {
         balance -= amount;
         return new Response<>(200,"done",null);
     }
-    @PostMapping("/deposit")
+    @GetMapping("/deposit")
     public Response<?> deposit(@RequestHeader String token, @RequestHeader int amount) {
         System.out.println(token);
         if (!token.equals("BOE-0112-XgF0")) {
