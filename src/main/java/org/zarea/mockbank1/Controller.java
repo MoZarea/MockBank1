@@ -1,9 +1,6 @@
 package org.zarea.mockbank1;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
@@ -19,25 +16,25 @@ public class Controller {
         );
         return new Response<>(200,"done",balanceResponse);
     }
-    @GetMapping("/withdraw")
-    public Response<?> withdraw(@RequestHeader String token, @RequestHeader int amount) {
+    @PostMapping("/withdraw")
+    public Response<?> withdraw(@RequestHeader String token, @RequestBody WithdrawMoneyRequest request) {
         System.out.println(token);
         if (!token.equals("BOE-0112-XgF0")) {
             throw new IllegalArgumentException("Invalid token");
         }
-        if (amount > balance) {
+        if (Integer.parseInt(request.getAmount()) > balance) {
             throw new IllegalArgumentException("Insufficient balance");
         }
-        balance -= amount;
+        balance -= Integer.parseInt(request.getAmount());
         return new Response<>(200,"done",null);
     }
-    @GetMapping("/deposit")
-    public Response<?> deposit(@RequestHeader String token, @RequestHeader int amount) {
+    @PostMapping("/deposit")
+    public Response<?> deposit(@RequestHeader String token, @RequestBody DepositMoneyRequest request) {
         System.out.println(token);
         if (!token.equals("BOE-0112-XgF0")) {
             throw new IllegalArgumentException("Invalid token");
         }
-        balance += amount;
+        balance += Integer.parseInt(request.getAmount());
         return new Response<>(200,"done",null);
     }
 }
